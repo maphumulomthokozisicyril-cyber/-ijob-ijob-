@@ -1,20 +1,27 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# i job i job
 
-# Run and deploy your AI Studio app
+i job i job is a Netlify-ready career application workspace for CV audits, pitch generation, interview coaching, and job pipeline tracking.
 
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/dc6b1598-ab1a-4fb5-b1f9-c992aee109f3
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
+## Local Development
 
 1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+
+   ```bash
+   npm install
+   ```
+
+2. Create a local environment file and set the required Gemini API key:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
 3. Run the app:
-   `npm run dev`
+
+   ```bash
+   npm run dev
+   ```
+
+## Netlify Deployment
+
+The production site publishes the Vite build output from `dist` and serves AI endpoints from `netlify/functions`. Configure `GEMINI_API_KEY` in Netlify environment variables before deploying.

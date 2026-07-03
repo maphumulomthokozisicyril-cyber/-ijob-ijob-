@@ -16,7 +16,6 @@ import {
   Award,
   Info,
   LayoutDashboard,
-  ShieldAlert,
 } from "lucide-react";
 import { User, TargetField, KanbanTask } from "./types";
 import SignInModal from "./components/SignInModal";
@@ -25,14 +24,12 @@ import PitchGeneratorTab from "./components/PitchGeneratorTab";
 import InterviewCoachTab from "./components/InterviewCoachTab";
 import KanbanTracker from "./components/KanbanTracker";
 import DailyPlanner from "./components/DailyPlanner";
-import AdminPortal from "./components/AdminPortal";
 
 export default function App() {
   // Application view states
   const [view, setView] = useState<"landing" | "dashboard">("landing");
   const [activeTab, setActiveTab] = useState<"cv-architect" | "pitch-generator" | "interview-coach">("cv-architect");
   const [selectedIndustry, setSelectedIndustry] = useState<TargetField>("Tech/IT");
-  const [isAdminMode, setIsAdminMode] = useState(false);
 
   // User Authentication state
   const [currentUser, setCurrentUser] = useState<User | null>(null);
@@ -60,32 +57,6 @@ export default function App() {
     const tasksJson = localStorage.getItem("ijob_kanban_tasks");
     if (tasksJson) {
       setKanbanTasks(JSON.parse(tasksJson));
-    } else {
-      // Seed initial sample tasks for demonstration
-      const initialTasks: KanbanTask[] = [
-        {
-          id: "seed-1",
-          companyName: "Stripe",
-          roleTitle: "Customer Operations Specialist",
-          industry: "Customer Service/Call Center",
-          column: "Applied",
-          salary: "$75,000",
-          notes: "Screening submitted. Follow up in 3 days.",
-          dateAdded: "Jul 2",
-        },
-        {
-          id: "seed-2",
-          companyName: "Google",
-          roleTitle: "Frontend Engineer (Contracts)",
-          industry: "Tech/IT",
-          column: "Interviewing",
-          salary: "$120,000",
-          notes: "Technical interview scheduled. Prepare with STAR method questions.",
-          dateAdded: "Jun 30",
-        },
-      ];
-      setKanbanTasks(initialTasks);
-      localStorage.setItem("ijob_kanban_tasks", JSON.stringify(initialTasks));
     }
 
     // Initialize/read usage logs
@@ -113,7 +84,6 @@ export default function App() {
   const handleSignOut = () => {
     localStorage.removeItem("ijob_current_user");
     setCurrentUser(null);
-    setIsAdminMode(false);
     setView("landing");
   };
 
@@ -158,29 +128,13 @@ export default function App() {
   return (
     <div className="min-h-screen flex flex-col bg-[#fafafa] relative font-sans text-neutral-900 selection:bg-neutral-900 selection:text-white antialiased">
       
-      {/* GLOBAL SYSTEM BAR FOR HIDDEN ADMIN NOTIFICATIONS */}
-      {currentUser?.email === "admin@ijobijob.com" && (
-        <div className="bg-red-600 text-white text-xs px-4 py-2 font-semibold flex items-center justify-between gap-4 select-none shrink-0 border-b border-red-700">
-          <div className="flex items-center gap-2">
-            <ShieldAlert className="w-4 h-4 shrink-0 animate-pulse" />
-            <span>Secure Admin Account Identified. Hidden Operations Portal is unlocked.</span>
-          </div>
-          <button
-            onClick={() => setIsAdminMode(!isAdminMode)}
-            className="bg-white/10 hover:bg-white/20 px-3 py-1 rounded-md text-[10px] font-bold uppercase transition-all"
-          >
-            {isAdminMode ? "Exit Admin View" : "Enter Admin View"}
-          </button>
-        </div>
-      )}
-
       {/* HEADER / NAVIGATION BAR */}
       <header className="backdrop-blur-md bg-white/80 border-b border-zinc-200/80 sticky top-0 z-40 transition-all shrink-0 shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-15 flex items-center justify-between">
           
           {/* Logo / Title */}
           <button
-            onClick={() => { setIsAdminMode(false); setView("landing"); }}
+            onClick={() => { setView("landing"); }}
             className="flex items-center gap-2.5 group text-left cursor-pointer"
           >
             <div className="bg-blue-600 text-white w-9 h-9 rounded-xl flex items-center justify-center font-black italic text-base transition-all-custom group-hover:scale-105 shadow-sm shadow-blue-500/20">
@@ -189,16 +143,15 @@ export default function App() {
             <div>
               <div className="flex items-center gap-2">
                 <span className="font-extrabold text-base tracking-tight text-neutral-950 font-display">i job i job</span>
-                <span className="text-[9px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded border border-blue-200/60 font-mono font-bold">QA v1.2</span>
               </div>
-              <span className="text-[9px] font-bold text-neutral-400 block tracking-wider uppercase font-mono">Evaluation & Auditing Console</span>
+              <span className="text-[9px] font-bold text-neutral-400 block tracking-wider uppercase font-mono">Career Application Workspace</span>
             </div>
           </button>
 
           {/* Central navigation links */}
           <nav className="hidden md:flex items-center gap-7 text-xs font-bold text-neutral-500">
             <button
-              onClick={() => { setIsAdminMode(false); setView("landing"); }}
+              onClick={() => { setView("landing"); }}
               className={`hover:text-neutral-900 transition-colors cursor-pointer ${view === "landing" ? "text-neutral-950 font-extrabold border-b-2 border-blue-600 py-1" : ""}`}
             >
               Overview
@@ -208,11 +161,10 @@ export default function App() {
                 if (!currentUser) {
                   triggerAuthFlow("Register your email to access the unified candidate tracking dashboard.");
                 } else {
-                  setIsAdminMode(false);
                   setView("dashboard");
                 }
               }}
-              className={`hover:text-neutral-900 transition-colors cursor-pointer ${view === "dashboard" && !isAdminMode ? "text-neutral-950 font-extrabold border-b-2 border-blue-600 py-1" : ""}`}
+              className={`hover:text-neutral-900 transition-colors cursor-pointer ${view === "dashboard" ? "text-neutral-950 font-extrabold border-b-2 border-blue-600 py-1" : ""}`}
             >
               Candidate Workspace
             </button>
@@ -224,9 +176,9 @@ export default function App() {
           {/* Authentication trigger actions */}
           <div className="flex items-center gap-4">
             <div className="hidden lg:flex flex-col items-end mr-1">
-              <span className="text-[9px] text-neutral-400 uppercase tracking-wider font-mono">System Status</span>
+              <span className="text-[9px] text-neutral-400 uppercase tracking-wider font-mono">Service Status</span>
               <span className="text-[10.5px] text-emerald-600 font-mono font-bold flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> 100% OPERATIONAL
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" /> Ready
               </span>
             </div>
             {currentUser ? (
@@ -294,10 +246,7 @@ export default function App() {
 
       {/* RENDER VIEW CONTROLLER */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {isAdminMode ? (
-          /* Secure Administrative Operations Dashboard */
-          <AdminPortal onBackToDashboard={() => setIsAdminMode(false)} />
-        ) : view === "landing" ? (
+        {view === "landing" ? (
           /* High-Conversion SaaS Public Landing Page */
           <div className="space-y-16 animate-in fade-in duration-300">
             
@@ -348,7 +297,7 @@ export default function App() {
             {/* Interactive Widget Playground Preview */}
             <div className="bg-white border border-neutral-150 rounded-3xl p-6 sm:p-8 shadow-xs relative">
               <div className="absolute top-4 left-4 flex items-center gap-1.5 bg-sky-50 text-sky-700 border border-sky-100 text-[10px] font-bold px-2 py-0.5 rounded-full">
-                <Star className="w-3 h-3 fill-sky-600" /> Playground Mode
+                <Star className="w-3 h-3 fill-sky-600" /> Preview Tool
               </div>
               
               <div className="text-center max-w-xl mx-auto mb-8 pt-2">
@@ -549,7 +498,7 @@ export default function App() {
                 {currentUser?.isPremium ? (
                   <div className="bg-blue-950/40 border border-blue-900/50 rounded-xl p-3">
                     <p className="text-[11.5px] text-blue-300 font-medium leading-relaxed">
-                      🚀 <strong className="text-white">Premium Status Active:</strong> Infinite scans, cover letter copying, and unlimited interview coaching are unlocked.
+                      <strong className="text-white">Premium Status Active:</strong> Unlimited scans, cover letter copying, and interview coaching are unlocked.
                     </p>
                   </div>
                 ) : (
