@@ -310,7 +310,7 @@ export default function App() {
               
               <h1 className="text-4xl sm:text-5xl font-black font-display tracking-tight text-neutral-900 leading-none">
                 Job Seeking is a{" "}
-                <span className="underline decoration-sky-500 decoration-wavy decoration-2 underline-offset-4">QA</span> Process.
+                <span className="underline decoration-sky-500 decoration-wavy decoration-2 underline-offset-4">Process</span>.
               </h1>
               
               <p className="text-sm text-neutral-500 leading-relaxed max-w-2xl mx-auto">
