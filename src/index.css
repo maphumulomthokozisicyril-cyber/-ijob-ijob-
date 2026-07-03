@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+
+  --color-neutral-50: #fafafa;
+  --color-neutral-100: #f4f4f5;
+  --color-neutral-150: #e4e4e7;
+  --color-neutral-200: #e4e4e7;
+  --color-neutral-300: #d4d4d8;
+  --color-neutral-400: #a1a1aa;
+  --color-neutral-500: #71717a;
+  --color-neutral-600: #52525b;
+  --color-neutral-700: #3f3f46;
+  --color-neutral-800: #27272a;
+  --color-neutral-850: #18181b;
+  --color-neutral-900: #09090b;
+  --color-neutral-950: #020203;
+
+  --color-sky-50: #eff6ff;
+  --color-sky-100: #dbeafe;
+  --color-sky-200: #bfdbfe;
+  --color-sky-300: #93c5fd;
+  --color-sky-400: #60a5fa;
+  --color-sky-500: #3b82f6;
+  --color-sky-600: #2563eb;
+  --color-sky-700: #1d4ed8;
+  --color-sky-850: #1e40af;
+  --color-sky-900: #1e3a8a;
+  --color-sky-950: #172554;
+}
+
+body {
+  background-color: #fafafa;
+  color: #18181b;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+
+/* Custom premium-grade shadow */
+.premium-shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+.premium-card {
+  background-color: #ffffff;
+  border: 1px solid #e4e4e7;
+  border-radius: 1rem;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-card:hover {
+  border-color: #d4d4d8;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom smooth transitions */
+.transition-all-custom {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+

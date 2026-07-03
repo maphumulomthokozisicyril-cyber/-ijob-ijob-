@@ -1,0 +1,6 @@
+{
+  "name": "i job i job",
+  "description": "An advanced Quality Assurance (QA) engine for resumes, pitch materials, and interactive interview prep.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
