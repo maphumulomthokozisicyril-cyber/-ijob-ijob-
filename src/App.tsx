@@ -1,39 +1,374 @@
-import React, { useState, useEffect } from "react";
-import {
-  Zap,
-  Check,
-  CheckCircle2,
-  ArrowRight,
-  Lock,
-  Shield,
-  Activity,
-  FileText,
-  MessageSquare,
-  LogOut,
-  ChevronDown,
-  Sparkles,
-  Star,
-  Award,
-  Info,
-  LayoutDashboard,
-  ShieldAlert,
-} from "lucide-react";
-import { User, TargetField, KanbanTask } from "./types";
-import SignInModal from "./components/SignInModal";
-import CVAuditTab from "./components/CVAuditTab";
-import PitchGeneratorTab from "./components/PitchGeneratorTab";
-import InterviewCoachTab from "./components/InterviewCoachTab";
-import KanbanTracker from "./components/KanbanTracker";
-import DailyPlanner from "./components/DailyPlanner";
-import AdminPortal from "./components/AdminPortal";
+<!DOCTYPE html>
 
-export default function App() {
-  // Application view states
-  const [view, setView] = useState<"landing" | "dashboard">("landing");
-  const [activeTab, setActiveTab] = useState<"cv-architect" | "pitch-generator" | "interview-coach">("cv-architect");
-  const [selectedIndustry, setSelectedIndustry] = useState<TargetField>("Tech/IT");
-  const [isAdminMode, setIsAdminMode] = useState(false);
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ijobijob QA v1.2</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap');
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+    </style>
+
+</head>
+
+<body class="min-h-screen bg-slate-50/50 text-slate-800 flex flex-col">
+
+
+
+    <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-slate-200">
+
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+
+            <div class="flex items-center gap-3">
+
+                <span class="font-extrabold text-lg tracking-tight text-slate-900">
+
+                    ijobijob <span class="text-xs bg-blue-50 text-blue-600 px-2.5 py-1 rounded-lg border border-blue-200 font-mono font-bold">QA v1.2</span>
+
+                </span>
+
+            </div>
+
+            <nav class="flex items-center gap-6">
+
+                <a href="#pricing" class="text-xs text-slate-500 hover:text-slate-900 font-bold transition-all">
+
+                    Premium (R99/mo)
+
+                </a>
+
+                <button onclick="toggleAuthModal()" class="text-xs font-extrabold uppercase px-4 py-2 bg-slate-900 text-white rounded-lg hover:bg-slate-800 transition-all">
+
+                    Sign In
+
+                </button>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+
+
+    <main class="flex-1 max-w-7xl mx-auto px-4 py-10 w-full space-y-10">
+
+        <div class="text-center max-w-3xl mx-auto space-y-4">
+
+            <div class="inline-flex items-center gap-2 bg-slate-100 border border-slate-200 text-slate-800 text-xs font-bold px-3.5 py-1.5 rounded-full shadow-sm">
+
+                <span>✨ Meticulous QA Review for Resumes & Pitches</span>
+
+            </div>
+
+            <h1 class="text-4xl font-black tracking-tight text-slate-900">
+
+                Job Seeking is a <span class="underline decoration-sky-500 decoration-wavy underline-offset-4">Process</span>.
+
+            </h1>
+
+            <p class="text-sm text-slate-500 leading-relaxed max-w-2xl mx-auto">
+
+                Audit resumes against target jobs, draft cover letters, and run interactive interview sessions.
+
+            </p>
+
+        </div>
+
+
+
+        <div class="flex border-b border-slate-200 max-w-md mx-auto">
+
+            <button id="tab-cv" onclick="switchTab('cv')" class="flex-1 py-3 text-xs font-bold transition-all border-b-2 text-center cursor-pointer border-slate-900 text-slate-900">
+
+                CV Architect
+
+            </button>
+
+            <button id="tab-pitch" onclick="switchTab('pitch')" class="flex-1 py-3 text-xs font-bold transition-all border-b-2 text-center cursor-pointer border-transparent text-slate-400 hover:text-slate-600">
+
+                Pitch Generator
+
+            </button>
+
+            <button id="tab-coach" onclick="switchTab('coach')" class="flex-1 py-3 text-xs font-bold transition-all border-b-2 text-center cursor-pointer border-transparent text-slate-400 hover:text-slate-600">
+
+                Interview Coach
+
+            </button>
+
+        </div>
+
+
+
+        <div id="panel-cv" class="space-y-6 max-w-4xl mx-auto">
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+
+                <h2 class="text-lg font-extrabold flex items-center gap-2 text-slate-900 mb-4">
+
+                    📝 The CV Architect
+
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div>
+
+                        <label class="block text-xs font-bold text-slate-500 mb-2 uppercase">Your Resume Details</label>
+
+                        <textarea id="cv-input" placeholder="Paste your resume details here..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs font-mono focus:outline-none focus:border-slate-400" rows="8"></textarea>
+
+                    </div>
+
+                    <div>
+
+                        <label class="block text-xs font-bold text-slate-500 mb-2 uppercase">Target Job Description</label>
+
+                        <textarea id="jd-input" placeholder="Paste target job description..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs font-mono focus:outline-none focus:border-slate-400" rows="8"></textarea>
+
+                    </div>
+
+                </div>
+
+                <div class="mt-5 flex justify-end border-t border-slate-100 pt-5">
+
+                    <button onclick="runCVAudit()" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs uppercase px-6 py-3 rounded-xl transition-all shadow-sm">
+
+                        Execute Alignment Audit
+
+                    </button>
+
+                </div>
+
+                <div id="cv-result" class="hidden mt-6 border-t border-slate-100 pt-6 space-y-4">
+
+                    <div class="flex items-center gap-3">
+
+                        <span class="text-sm font-bold">Compatibility Score:</span>
+
+                        <span class="text-lg font-black text-emerald-600 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-200">78%</span>
+
+                    </div>
+
+                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-150 space-y-2 text-xs">
+
+                        <p class="font-bold text-slate-700">⚠️ QA Metrics Audit Finding:</p>
+
+                        <p class="text-slate-600 italic">"Lack of quantifiable business output metric in experience section. Recruiters favor CVs that prioritize impact margins over simple list-based tasks."</p>
+
+                        <p class="font-bold text-emerald-700 mt-2">💡 Suggested Improvement:</p>
+
+                        <p class="text-slate-700 font-medium bg-white p-2 rounded-lg border border-slate-200">Change 'Responsible for handling web analytics' to 'Increased digital conversion rate by 14% via custom conversion triggers'.</p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="panel-pitch" class="hidden space-y-6 max-w-4xl mx-auto">
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+
+                <h2 class="text-lg font-extrabold flex items-center gap-2 text-slate-900 mb-4">
+
+                    💬 The Pitch Generator
+
+                </h2>
+
+                <p class="text-xs text-slate-500 mb-4">Draft customized cover letters and outreach notes designed to maximize interview callback response rates.</p>
+
+                <div class="mt-5 flex justify-end border-t border-slate-100 pt-4">
+
+                    <button onclick="runPitchGen()" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-xs uppercase px-6 py-3 rounded-xl transition-all shadow-sm">
+
+                        Generate Pitch Output
+
+                    </button>
+
+                </div>
+
+                <div id="pitch-result" class="hidden mt-6 border-t border-slate-100 pt-6 space-y-4">
+
+                    <div class="bg-slate-50 rounded-xl p-4 border border-slate-150 space-y-2 text-xs font-mono whitespace-pre-line text-slate-700">
+
+                        <strong>Subject:</strong> Senior Developer - Custom System Alignment
+
+
+
+                        Dear Hiring Manager,
+
+                        I am writing to express my eager interest in the open position. Your roadmap indicates an urgent focus on scalability, which maps directly to my professional focus...
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="panel-coach" class="hidden space-y-6 max-w-2xl mx-auto">
+
+            <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col h-[500px]">
+
+                <div class="flex items-center justify-between pb-4 border-b border-slate-150">
+
+                    <h2 class="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+
+                        Live Interview Simulator
+
+                    </h2>
+
+                </div>
+
+                <div id="chat-stream" class="flex-1 overflow-y-auto py-4 space-y-4">
+
+                    <div class="flex gap-3 max-w-[85%] mr-auto">
+
+                        <div class="bg-slate-200 text-slate-800 p-2 rounded-xl h-8 w-8 flex items-center justify-center font-mono text-xs font-bold">C</div>
+
+                        <div class="bg-slate-100 text-xs text-slate-800 p-4 rounded-2xl leading-relaxed border border-slate-200">
+
+                            Tell me about a complex project where you had to coordinate multiple moving pieces under a tight deadline.
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="mt-auto border-t border-slate-200 pt-3 flex gap-3">
+
+                    <input id="chat-input" type="text" placeholder="Type your professional interview response here..." class="flex-1 bg-slate-50 border border-slate-300 rounded-xl px-4 py-2.5 text-xs font-mono focus:outline-none">
+
+                    <button onclick="sendChatMessage()" class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2 rounded-xl text-xs font-bold transition-all shadow-sm">Send</button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <div id="auth-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-xs p-4">
+
+        <div class="bg-white w-full max-w-sm rounded-2xl p-6 shadow-xl border border-slate-200 space-y-4">
+
+            <h3 class="text-base font-extrabold text-slate-900">Sign in to ijobijob</h3>
+
+            <p class="text-xs text-slate-500">Access premium QA features and your application history track records.</p>
+
+            <input type="email" placeholder="name@example.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:outline-none">
+
+            <div class="flex gap-3 justify-end pt-2">
+
+                <button onclick="toggleAuthModal()" class="px-4 py-2 border border-slate-200 rounded-xl text-xs font-bold text-slate-500">Cancel</button>
+
+                <button onclick="toggleAuthModal()" class="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold">Continue</button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <script>
+
+        function switchTab(tabId) {
+
+            ['cv', 'pitch', 'coach'].forEach(id => {
+
+                document.getElementById('panel-' + id).classList.add('hidden');
+
+                document.getElementById('tab-' + id).className = "flex-1 py-3 text-xs font-bold transition-all border-b-2 text-center cursor-pointer border-transparent text-slate-400 hover:text-slate-600";
+
+            });
+
+            document.getElementById('panel-' + tabId).classList.remove('hidden');
+
+            document.getElementById('tab-' + tabId).className = "flex-1 py-3 text-xs font-bold transition-all border-b-2 text-center cursor-pointer border-slate-900 text-slate-900";
+
+        }
+
+        function toggleAuthModal() {
+
+            document.getElementById('auth-modal').classList.toggle('hidden');
+
+        }
+
+        function runCVAudit() {
+
+            document.getElementById('cv-result').classList.remove('hidden');
+
+        }
+
+        function runPitchGen() {
+
+            document.getElementById('pitch-result').classList.remove('hidden');
+
+        }
+
+        function sendChatMessage() {
+
+            const input = document.getElementById('chat-input');
+
+            if(!input.value.trim()) return;
+
+            const stream = document.getElementById('chat-stream');
+
+            
+
+            // User bubble
+
+            stream.innerHTML += `<div class="flex gap-3 max-w-[85%] ml-auto flex-row-reverse"><div class="bg-slate-900 text-white p-2 rounded-xl h-8 w-8 flex items-center justify-center font-mono text-xs font-bold">U</div><div class="bg-blue-600 text-white text-xs p-4 rounded-2xl leading-relaxed">${input.value}</div></div>`;
+
+            input.value = '';
+
+            
+
+            // Coach response bubble
+
+            setTimeout(() => {
+
+                stream.innerHTML += `<div class="flex gap-3 max-w-[85%] mr-auto"><div class="bg-slate-200 text-slate-800 p-2 rounded-xl h-8 w-8 flex items-center justify-center font-mono text-xs font-bold">C</div><div class="bg-slate-100 text-xs text-slate-800 p-4 rounded-2xl leading-relaxed border border-slate-200">Excellent structural breakdown. As a QA metric check, how did you track success metrics on that specific layout delivery?</div></div>`;
+
+                stream.scrollTop = stream.scrollHeight;
+
+            }, 1000);
+
+        }
+
+    </script>
+
+</body>
+
+</html>
   // User Authentication state
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [authModalOpen, setAuthModalOpen] = useState(false);
